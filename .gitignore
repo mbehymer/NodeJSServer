@@ -1,0 +1,4 @@
+node_modules
+.env
+gamestore_key.json
+.vscode
