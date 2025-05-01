@@ -29,9 +29,11 @@ app.use(logger);
 
 // ========== FIREBASE END ============ //
 
-
+/* // Uncomment when you are ready to use firebase
 const fireDB = require('./db/connect');
 fireDB.initDB();
+*/
+
 // app.use("/", require("./routes"));
 
 app.use(credentials);
