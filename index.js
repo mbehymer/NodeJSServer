@@ -31,10 +31,11 @@ app.use(logger);
 
 // ========== FIREBASE END ============ //
 
-/* // Uncomment when you are ready to use firebase
-const fireDB = require('./db/connect');
-fireDB.initDB();
-*/
+// Uncomment when you are ready to use firebase
+const fireDBConnector = require('./db/connect');
+fireDBConnector.initDB();
+const fireDB = fireDBConnector.getDB();
+
 
 // app.use("/", require("./routes"));
 
@@ -60,6 +61,26 @@ app.use('/auth', require('./routes/auth'));
 app.use('/refresh', require('./routes/refresh'));
 app.use('/logout', require('./routes/logout'));
 app.use('/characters', require('./routes/api/characters'));
+app.use('/test', async (req, res) => {
+    // fireDB
+    const usersCollection = fireDB.collection('users');
+    const users = await usersCollection.get();
+    let userList = [];
+    console.log('======================== USERS ===========================')
+    users.forEach(user => {
+        console.log(user);
+    });
+    res.json(users);
+    
+    // const doc = await cityRef.get();
+    // if (!doc.exists) {
+    // console.log('No such document!');
+    // } else {
+    // console.log('Document data:', doc.data());
+    // }
+    
+
+});
 app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', '404.html'));
 });
