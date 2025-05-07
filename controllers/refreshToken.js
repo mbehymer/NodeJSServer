@@ -2,32 +2,41 @@ const usersDB = {
     users: require('../model/users.json'),
     setUsers: function (data) {this.users = data}
 }
+const fireDB = require('../db/connect.js').getDB();
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const handleRefreshToken = (req, res) => {
+const handleRefreshToken = async (req, res) => {
     const cookies = req.cookies;
     // console.log('refreshToken - req',req);
     // for (let key in cookies) {
     //     console.log('key', key);
     //     console.log('value', cookies[key]);
     // }
-    console.log('refreshToken - cookies', cookies);
+    // console.log('refreshToken - cookies', cookies);
     if (!cookies?.jwt) return res.sendStatus(401);
     
     console.log("COOKIES", cookies.jwt);
 
     const refreshToken = cookies.jwt;
 
-    usersDB.users.forEach(user => {
-        console.log('user', user);
-        console.log('userRefToken', user.refreshToken);
-        console.log('refToken', refreshToken);
+    // usersDB.users.forEach(user => {
+    //     console.log('user', user);
+    //     console.log('userRefToken', user.refreshToken);
+    //     console.log('refToken', refreshToken);
 
-        console.log(user.refreshToken, '===', refreshToken);
+    //     console.log(user.refreshToken, '===', refreshToken);
+    // });
+    
+    const allUsers = await fireDB.collection('users').get();
+    // if (!reqUser.exists) return res.sendStatus(403); // Forbidden
+    let userFound = false;
+    allUsers.forEach( data => {
+        if (data.data().refreshToken === refreshToken) {
+            userFound = data.data();
+        }
     });
-
-    const userFound = usersDB.users.find( data => data.refreshToken === refreshToken );
+    // const userFound = allUsers.find( data => data.data().refreshToken === refreshToken );
     if (!userFound) return res.sendStatus(403); // Forbidden
 
     // Evaluate jwt
