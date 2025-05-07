@@ -9,8 +9,8 @@ const credentials = require('./middleware/credentials');
 const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 8080;
 const corsOptions = require('./config/corsOptions');
-console.log('=============================== process =================================');
-console.log(process);
+// console.log('=============================== process =================================');
+// console.log(process);
 
 // Logging Middleware
 app.use(logger);
