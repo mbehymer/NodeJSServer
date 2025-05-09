@@ -3,14 +3,16 @@ const fsPromises = require('fs').promises;
 const path = require('path');
 
 const data = {};
-const Character = require('../model/classes/character')
+const Character = require('../model/classes/character');
 data.characters = require('../model/characters.json');
+const fireDB = require('../db/connect').getDB();
 
 
 
+const getAllCharacters = async (req, res) => {
+    const allCharacters = await fireDB.collection('characters').get();
+    res.json(allCharacters);
 
-const getAllCharacters = (req, res) => {
-    res.json(data.characters);
 }
 
 const getSpecificCharacter = (req, res) => {
@@ -18,18 +20,22 @@ const getSpecificCharacter = (req, res) => {
     // res.json({"id": req.params.id})
 }
 
-const creatNewCharacter = (req, res) => {
+const createNewCharacter = (req, res) => {
     let character = new Character(
-        req.body.name,
-        req.body.level,
-        req.body.power,
-        req.body.health,
-        req.body.weapon
+        req.body.character.name,
+        req.body.character.level,
+        req.body.character.power,
+        req.body.character.health,
+        req.body.character.weapon
     ).getJSON()
-    character.id = data.characters.sort((char1, char2) => { char1.id < char2.id })[data.characters.length -1].id + 1
-    data.characters.push(character);
+    console.log(req.body.character);
+    const uniqueID = crypto.randomUUID();
+    const characterRef = fireDB.collection('characters').doc(uniqueID);
+    character.id = uniqueID;
+    // data.characters.push(character);
+    characterRef.set(character);
 
-    res.json(data.characters);
+    res.json(character);
 }
 
 
@@ -61,7 +67,7 @@ const deleteCharacter = (req, res) => {
 module.exports = {
     getAllCharacters,
     getSpecificCharacter,
-    creatNewCharacter,
+    createNewCharacter,
     updateCharacter,
     deleteCharacter
 }
