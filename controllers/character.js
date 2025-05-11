@@ -11,7 +11,11 @@ const fireDB = require('../db/connect').getDB();
 
 const getAllCharacters = async (req, res) => {
     const allCharacters = await fireDB.collection('characters').get();
-    res.json(allCharacters);
+    let characterList = [];
+    allCharacters.forEach(character => {
+        characterList.push(character.data());
+    });
+    res.json(characterList);
 
 }
 
