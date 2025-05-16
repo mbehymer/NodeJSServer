@@ -25,6 +25,8 @@ const getSpecificCharacter = (req, res) => {
 }
 
 const createNewCharacter = (req, res) => {
+    console.log('============================== CHARACTER CREATE ==============================')
+    console.log('req', req.body);
     let character = new Character(
         req.body.character.name,
         req.body.character.level,
@@ -44,19 +46,15 @@ const createNewCharacter = (req, res) => {
 
 
 const updateCharacter = async (req, res) => {
-    console.log('============================== CHARACTER ==============================')
+    console.log('============================== CHARACTER UPDATE ==============================')
     console.log('req', req.body);
     let { character } = req.body;
-    // character.id = data.characters.sort((character1, character2) => { character1.id < character2.id })[data.characters.length -1].id + 1
-    // data.characters.push(character);
-    let index = data.characters.findIndex(char => char.id === Number(character.id));
-    data.characters[index] = character;
-    await fsPromises.writeFile(
-        path.join(__dirname, '..', 'model', 'characters.json'),
-        JSON.stringify(data.characters)
-    );
-
-    res.json(data.characters);
+    // TODO Find a way to only edit the fields in question...
+    let characterRef = fireDB.collection('characters').doc(character.id);
+    let response = await characterRef.set(character, {merge: true});
+    console.log('==== response ====', response);
+    
+    res.json(character);
 }
 
 const deleteCharacter = (req, res) => {

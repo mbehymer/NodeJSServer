@@ -32,7 +32,7 @@ const handleLogin = async (req, res) => {
                 }
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '30s'}
+            { expiresIn: '5m'}
         ); // Dont pass in  sensitive data like passwords and the like. We will need to pass something in that is identifiable thus the username.
         const refreshToken = jwt.sign(
             { "username": userFound.username },
