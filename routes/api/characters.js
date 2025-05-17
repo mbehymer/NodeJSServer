@@ -15,6 +15,6 @@ router.route('/')
 
 router.route('/:id')
     .get(verifyJWT, controller.getSpecificCharacter)
-.delete(verifyJWT, verifyRoles(ROLES_LIST.Admin), controller.deleteCharacter);
+    .delete(verifyJWT, verifyRoles(ROLES_LIST.Admin), controller.deleteCharacter);
     
 module.exports = router;

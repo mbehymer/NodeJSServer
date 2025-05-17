@@ -39,7 +39,7 @@ const handleRefreshToken = async (req, res) => {
                 { expiresIn: '5m'}
             )
 
-            res.json({ accessToken });
+            res.json({ accessToken: accessToken, role: userFound.roles['Admin'] === 1030 ? 'A' : userFound.roles['Editor'] === 1020 ? 'E' : 'U' });
         }
     );
 
