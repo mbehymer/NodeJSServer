@@ -15,7 +15,10 @@ const handleLogin = async (req, res) => {
 
     const userRef = fireDB.collection('users').doc(user);
     const reqUser =  await userRef.get();
-    if (!reqUser.exists) return res.sendStatus(401); // Unauthorized
+
+    if (!reqUser.exists) {
+        console.log("REQUSER doesn't exist");
+        return res.sendStatus(401);} // Unauthorized
     const userFound = reqUser.data();
     // Evaluate password
     const match = await bcrypt.compare(pwd, userFound.password);
@@ -46,10 +49,11 @@ const handleLogin = async (req, res) => {
         //We don't want to send the token in a place that can be accessed by JavaScript, so not in LOCAL STORAGE or in COOKIEs. Rather you want to store it in the memory. One thing we can do is set the COOKIE as HTTP Only and this will make it not accessible to JavaScript
         res.cookie('jwt', refreshToken, {httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000}); // 24 for hours, 60 for minutes, 60 for seconds, 1000 for milliseconds, thus total being one day.
 
-        res.json({ accessToken })
+        res.json({ accessToken: accessToken, role: userFound.roles['Admin'] === 1030 ? 'A' : userFound.roles['Editor'] === 1020 ? 'E' : 'U'})
         // res.json({ 'success' : `User ${user} is logged in! `});
 
     } else {
+        console.log("No match!");
         res.sendStatus(401);
     }
 }
