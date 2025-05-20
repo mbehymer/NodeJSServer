@@ -11,7 +11,7 @@ router.route('/')
     .get(verifyJWT, controller.getAllCharacters)
     .post(verifyJWT, verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor), controller.createNewCharacter)
     .put(verifyJWT, verifyRoles(ROLES_LIST.Admin, ROLES_LIST.Editor),controller.updateCharacter)
-    .delete(verifyJWT, verifyRoles(ROLES_LIST.Admin), controller.deleteCharacter);
+    // .delete(verifyJWT, verifyRoles(ROLES_LIST.Admin), controller.deleteCharacter);
 
 router.route('/:id')
     .get(verifyJWT, controller.getSpecificCharacter)

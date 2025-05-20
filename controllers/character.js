@@ -19,8 +19,17 @@ const getAllCharacters = async (req, res) => {
 
 }
 
-const getSpecificCharacter = (req, res) => {
-    res.json(data.characters.find(character => String(character.id) === String(req.params.id)));
+const getSpecificCharacter = async (req, res) => {
+
+    console.log('========================== GET SPECIFIC CHARACTER ==============================')
+    console.log('req', req.params);
+    let id = req.params.id;
+    
+    // TODO Find a way to only edit the fields in question...
+    let character = await fireDB.collection('characters').doc(id).get();
+    // co
+    console.log('character',character.data());
+    res.json(character.data());
     // res.json({"id": req.params.id})
 }
 
@@ -57,13 +66,21 @@ const updateCharacter = async (req, res) => {
     res.json(character);
 }
 
-const deleteCharacter = (req, res) => {
+const deleteCharacter = async (req, res) => {
     console.log(req.params.id);
-    let index = data.characters.findIndex((character) => { String(character.id) === String(req.params.id) });
-    console.log(index);
-    console.log(data.characters[index]);
-    console.log(data.characters.splice(index));
-    res.json(data.characters);
+    // let index = data.characters.findIndex((character) => { String(character.id) === String(req.params.id) });
+    // console.log(index);
+    // console.log(data.characters[index]);
+    // console.log(data.characters.splice(index));
+    
+    let id = req.params.id;
+    
+    // TODO Find a way to only edit the fields in question...
+    let characterRef = fireDB.collection('characters').doc(id);
+    let response = await characterRef.delete(); // THIS WILL NOT DELETE SUBCOLLECTIONS!!
+    console.log('==== response ====', response);
+    
+    res.json({id});
 }
 
 module.exports = {

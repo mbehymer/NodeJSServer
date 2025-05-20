@@ -48,7 +48,7 @@ const handleLogin = async (req, res) => {
         userRef.set(currentUser, {merge: true});
         //We don't want to send the token in a place that can be accessed by JavaScript, so not in LOCAL STORAGE or in COOKIEs. Rather you want to store it in the memory. One thing we can do is set the COOKIE as HTTP Only and this will make it not accessible to JavaScript
         res.cookie('jwt', refreshToken, {httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000}); // 24 for hours, 60 for minutes, 60 for seconds, 1000 for milliseconds, thus total being one day.
-
+        console.log('jwt', refreshToken);
         res.json({ accessToken: accessToken, role: userFound.roles['Admin'] === 1030 ? 'A' : userFound.roles['Editor'] === 1020 ? 'E' : 'U'})
         // res.json({ 'success' : `User ${user} is logged in! `});
 
