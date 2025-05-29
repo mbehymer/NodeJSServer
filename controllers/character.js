@@ -2,9 +2,9 @@
 const fsPromises = require('fs').promises;
 const path = require('path');
 
-const data = {};
+// const data = {};
 const Character = require('../model/classes/character');
-data.characters = require('../model/characters.json');
+// data.characters = require('../model/characters.json');
 const fireDB = require('../db/connect').getDB();
 
 
