@@ -61,6 +61,7 @@ app.use('/auth', require('./routes/auth'));
 app.use('/refresh', require('./routes/refresh'));
 app.use('/logout', require('./routes/logout'));
 app.use('/characters', require('./routes/api/characters'));
+app.use('/user-details', require('./routes/api/userDetails'))
 app.use('/test', async (req, res) => {
     // fireDB
     const usersCollection = fireDB.collection('users');
