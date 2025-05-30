@@ -43,8 +43,9 @@ const handleRefreshToken = async (req, res) => {
                 process.env.ACCESS_TOKEN_SECRET,
                 { expiresIn: '5m'}
             )
-
-            res.json({ accessToken: accessToken, role: roles['Admin'] === 1030 ? 'A' : roles['Editor'] === 1020 ? 'E' : 'U' , id: userDataID});
+            let role = userFound.roles['Admin'] === 1030 ? 'A' : userFound.roles['Editor'] === 1020 ? 'E' : 'U';
+            
+            res.json({ accessToken: accessToken, role: role , id: userDataID});
         }
     );
 
