@@ -29,9 +29,9 @@ const handleNewUser = async (req, res) => {
         await userRef.set(newUser); // I don't set merge to true as this should be a new user
 
 
-        res.status(201).json({ 'success': `New user ${user} created!`});
+        return res.status(201).json({ 'success': `New user ${user} created!`});
     } catch (err) {
-        res.status(500).json({ 'message': err.message });
+        return res.status(500).json({ 'message': err.message });
     }
 };
 

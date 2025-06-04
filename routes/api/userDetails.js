@@ -9,9 +9,9 @@ const verifyJWT = require('../../middleware/verifyJWT');
 
 
 router.route('/:id')
-    .get(verifyJWT, controller.getUserData);
+    .get(verifyJWT, controller.getUserData)
     // .post(verifyJWT, controller.createNewCharacter)
-    // .put(verifyJWT, controller.updateCharacter)
+    .put(verifyJWT, controller.updateUserData)
     // .delete(verifyJWT, verifyRoles(ROLES_LIST.Admin), controller.deleteCharacter);
 
 // router.route('/:id')
